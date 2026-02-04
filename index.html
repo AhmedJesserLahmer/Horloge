@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendrier & Horloge Tunisie</title>
+    <link rel="stylesheet" href="Style.css">
+    <script src="Script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Calendrier & Horloge Tunisie</h1>
+            <p>Calendrier interactif avec l'heure en temps réel de la Tunisie</p>
+        </div>
+
+        <!-- Calendar and Clock Grid -->
+        <div class="grid-2">
+            <!-- Calendar -->
+            <div class="center">
+                <div class="card" style="width: 100%; max-width: 450px;">
+                    <div class="calendar-header">
+                        <button class="calendar-nav-btn" id="prevMonth">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                            </svg>
+                        </button>
+                        <h2 id="currentMonth"></h2>
+                        <button class="calendar-nav-btn" id="nextMonth">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="calendar-days-header">
+                        <div class="day-name">Dim</div>
+                        <div class="day-name">Lun</div>
+                        <div class="day-name">Mar</div>
+                        <div class="day-name">Mer</div>
+                        <div class="day-name">Jeu</div>
+                        <div class="day-name">Ven</div>
+                        <div class="day-name">Sam</div>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                </div>
+            </div>
+
+            <!-- Clock -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
+                <div class="digital-clock card" style="width: 100%; max-width: 450px;">
+                    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                        <svg class="icon" style="margin-right: 0.75rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <h3 style="font-size: 1.5rem; font-weight: 600;">Heure de Tunisie</h3>
+                    </div>
+                    <div class="clock-time" id="digitalTime">00:00:00</div>
+                    <div class="clock-date" id="digitalDate"></div>
+                    <div class="clock-timezone">UTC+1 (CET)</div>
+                </div>
+
+                <button class="btn btn-primary" id="toggleClock">
+                    Afficher horloge analogique
+                </button>
+
+                <div id="analogClockContainer" class="hidden">
+                    <div class="analog-clock">
+                        <div class="clock-center"></div>
+                        <div id="clockMarkers"></div>
+                        <div id="clockNumbers"></div>
+                        <div class="clock-hand hour-hand" id="hourHand"></div>
+                        <div class="clock-hand minute-hand" id="minuteHand"></div>
+                        <div class="clock-hand second-hand" id="secondHand"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Date Info -->
+        <div class="center">
+            <div class="card" style="width: 100%; max-width: 450px;">
+                <div class="card-title">
+                    <svg class="icon" style="color: #4f46e5;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <h3>Informations sur la date</h3>
+                </div>
+                <div id="dateInfo"></div>
+            </div>
+        </div>
+
+        <!-- Notes and Reminders -->
+        <div class="grid-2">
+            <!-- Notes -->
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div class="card-title" style="margin-bottom: 0;">
+                        <svg class="icon" style="color: #eab308;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                        </svg>
+                        <h3>Bloc-notes</h3>
+                    </div>
+                    <button class="btn btn-yellow" id="addNoteBtn">
+                        <svg class="icon" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        Nouvelle note
+                    </button>
+                </div>
+                <div id="noteForm" class="form-card yellow hidden">
+                    <input type="text" class="form-input" id="noteTitle" placeholder="Titre de la note...">
+                    <div style="height: 0.75rem;"></div>
+                    <textarea class="form-textarea" id="noteContent" placeholder="Écrivez votre note ici..."></textarea>
+                    <div style="height: 0.75rem;"></div>
+                    <div class="form-actions">
+                        <button class="btn" id="cancelNoteBtn" style="background: white; color: #4b5563;">Annuler</button>
+                        <button class="btn btn-yellow" id="saveNoteBtn">
+                            <svg class="icon" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+                            </svg>
+                            Enregistrer
+                        </button>
+                    </div>
+                </div>
+                <div class="notes-list" id="notesList"></div>
+            </div>
+
+            <!-- Reminders -->
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div class="card-title" style="margin-bottom: 0;">
+                        <svg class="icon" style="color: #ef4444;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                        <h3>Rappels</h3>
+                    </div>
+                    <button class="btn btn-red" id="addReminderBtn">
+                        <svg class="icon" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        Nouveau rappel
+                    </button>
+                </div>
+                <div id="reminderForm" class="form-card red hidden">
+                    <input type="text" class="form-input" id="reminderTitle" placeholder="Titre du rappel...">
+                    <div style="height: 0.75rem;"></div>
+                    <div class="grid-input">
+                        <input type="date" class="form-input" id="reminderDate">
+                        <input type="time" class="form-input" id="reminderTime">
+                    </div>
+                    <div style="height: 0.75rem;"></div>
+                    <textarea class="form-textarea" id="reminderDescription" placeholder="Description (optionnel)..." style="min-height: 80px;"></textarea>
+                    <div style="height: 0.75rem;"></div>
+                    <div class="form-actions">
+                        <button class="btn" id="cancelReminderBtn" style="background: white; color: #4b5563;">Annuler</button>
+                        <button class="btn btn-red" id="saveReminderBtn">Enregistrer</button>
+                    </div>
+                </div>
+                <div id="selectedDateReminders"></div>
+                <div class="reminders-list" id="remindersList"></div>
+            </div>
+        </div>
+
+        <!-- Checklist -->
+        <div class="center">
+            <div class="card" style="width: 100%; max-width: 900px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div class="card-title" style="margin-bottom: 0;">
+                        <svg class="icon" style="color: #10b981;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                        </svg>
+                        <h3>Liste de tâches</h3>
+                    </div>
+                    <div style="font-size: 0.875rem; color: #4b5563;">
+                        <span id="completedCount">0</span>/<span id="totalCount">0</span> complétées
+                    </div>
+                </div>
+
+                <div id="progressBar" class="progress-bar hidden">
+                    <div class="progress-header">
+                        <span style="font-size: 0.875rem; color: #4b5563;">Progression</span>
+                        <span style="font-size: 0.875rem; font-weight: 600; color: #10b981;" id="progressPercent">0%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="form-card green">
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+                        <input type="text" class="form-input" id="checklistInput" placeholder="Nouvelle tâche...">
+                        <button class="btn btn-green" id="addChecklistBtn">
+                            <svg class="icon" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            Ajouter
+                        </button>
+                    </div>
+                    <div class="priority-buttons">
+                        <span style="font-size: 0.875rem; color: #4b5563; padding: 0.5rem;">Priorité:</span>
+                        <button class="priority-btn low" data-priority="low">Basse</button>
+                        <button class="priority-btn medium active" data-priority="medium">Moyenne</button>
+                        <button class="priority-btn high" data-priority="high">Haute</button>
+                    </div>
+                </div>
+
+                <div class="checklist-items" id="checklistItems"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
