@@ -407,20 +407,20 @@ function deleteReminder(id) {
 }
 
 function renderReminders() {
-    // Sort reminders by date and time
+   
     const sortedReminders = [...reminders].sort((a, b) => {
         const dateA = new Date(`${a.date}T${a.time}`);
         const dateB = new Date(`${b.date}T${b.time}`);
         return dateA - dateB;
     });
 
-    // Filter upcoming reminders
+    
     const upcomingReminders = sortedReminders.filter(reminder => {
         const reminderDateTime = new Date(`${reminder.date}T${reminder.time}`);
         return reminderDateTime >= new Date();
     });
 
-    // Filter reminders for selected date
+    
     const selectedDateReminders = selectedDate ? sortedReminders.filter(reminder => {
         const reminderDate = new Date(reminder.date);
         return reminderDate.getDate() === selectedDate.getDate() &&
@@ -428,7 +428,7 @@ function renderReminders() {
                reminderDate.getFullYear() === selectedDate.getFullYear();
     }) : [];
 
-    // Render selected date reminders
+    
     const selectedContainer = document.getElementById('selectedDateReminders');
     if (selectedDateReminders.length > 0) {
         const dateStr = selectedDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
@@ -460,7 +460,7 @@ function renderReminders() {
         selectedContainer.innerHTML = '';
     }
 
-    // Render all upcoming reminders
+    
     const container = document.getElementById('remindersList');
     if (upcomingReminders.length === 0) {
         container.innerHTML = `
@@ -497,7 +497,7 @@ function renderReminders() {
     `).join('');
 }
 
-// Checklist Functions
+
 function initChecklist() {
     const priorityButtons = document.querySelectorAll('.priority-btn');
     priorityButtons.forEach(btn => {
@@ -555,7 +555,7 @@ function renderChecklist() {
     document.getElementById('completedCount').textContent = completedItems.length;
     document.getElementById('totalCount').textContent = checklistItems.length;
 
-    // Progress bar
+    
     const progressBar = document.getElementById('progressBar');
     if (checklistItems.length > 0) {
         progressBar.classList.remove('hidden');
@@ -566,7 +566,7 @@ function renderChecklist() {
         progressBar.classList.add('hidden');
     }
 
-    // Render items
+    
     const container = document.getElementById('checklistItems');
 
     if (checklistItems.length === 0) {
@@ -583,7 +583,7 @@ function renderChecklist() {
 
     let html = '';
 
-    // Pending items
+    
     if (pendingItems.length > 0) {
         html += pendingItems.map(item => {
             const priorityClass = item.priority === 'high' ? 'high-priority' : 
@@ -610,7 +610,7 @@ function renderChecklist() {
         }).join('');
     }
 
-    // Completed items
+    
     if (completedItems.length > 0) {
         html += `
             <div style="padding-top: 1rem; border-top: 1px solid #e5e7eb; margin-top: 1rem;">
@@ -641,7 +641,7 @@ function renderChecklist() {
     container.innerHTML = html;
 }
 
-// Utility Functions
+
 function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('fr-FR', {
