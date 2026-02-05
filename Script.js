@@ -1,4 +1,3 @@
-// State
 let currentMonth = new Date();
 let selectedDate = new Date();
 let showAnalogClock = false;
@@ -7,13 +6,11 @@ let reminders = [];
 let checklistItems = [];
 let currentPriority = 'medium';
 
-// Month names in French
 const monthNames = [
     "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
     "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
 ];
 
-// Initialize
 document.addEventListener('DOMContentLoaded', function() {
     initCalendar();
     initClock();
@@ -24,7 +21,6 @@ document.addEventListener('DOMContentLoaded', function() {
     updateDateInfo();
 });
 
-// Calendar Functions
 function initCalendar() {
     document.getElementById('prevMonth').addEventListener('click', () => {
         currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1);
@@ -51,14 +47,12 @@ function renderCalendar() {
     const grid = document.getElementById('calendarGrid');
     grid.innerHTML = '';
 
-    // Empty cells before first day
     for (let i = 0; i < firstDay; i++) {
         const emptyDiv = document.createElement('div');
         emptyDiv.className = 'calendar-day';
         grid.appendChild(emptyDiv);
     }
 
-    // Days of month
     for (let day = 1; day <= daysInMonth; day++) {
         const dayDiv = document.createElement('div');
         dayDiv.className = 'calendar-day';
@@ -67,7 +61,6 @@ function renderCalendar() {
         button.className = 'calendar-day-btn';
         button.textContent = day;
 
-        // Check if today
         const today = new Date();
         if (day === today.getDate() && 
             month === today.getMonth() && 
@@ -75,7 +68,6 @@ function renderCalendar() {
             button.classList.add('today');
         }
 
-        // Check if selected
         if (selectedDate && 
             day === selectedDate.getDate() && 
             month === selectedDate.getMonth() && 
@@ -95,7 +87,6 @@ function renderCalendar() {
     }
 }
 
-// Clock Functions
 function initClock() {
     updateClock();
     setInterval(updateClock, 1000);
@@ -119,7 +110,6 @@ function updateClock() {
     const now = new Date();
     const tunisiaTime = new Date(now.toLocaleString("en-US", { timeZone: "Africa/Tunis" }));
 
-    // Digital clock
     const hours = String(tunisiaTime.getHours()).padStart(2, '0');
     const minutes = String(tunisiaTime.getMinutes()).padStart(2, '0');
     const seconds = String(tunisiaTime.getSeconds()).padStart(2, '0');
@@ -136,7 +126,6 @@ function updateClock() {
     document.getElementById('digitalDate').textContent = 
         tunisiaTime.toLocaleDateString('fr-FR', dateOptions);
 
-    // Analog clock
     if (showAnalogClock) {
         updateAnalogClock(tunisiaTime);
     }
@@ -146,7 +135,6 @@ function initAnalogClock() {
     const markersContainer = document.getElementById('clockMarkers');
     const numbersContainer = document.getElementById('clockNumbers');
 
-    // Add 12 hour markers
     for (let i = 0; i < 12; i++) {
         const angle = (i * 30 * Math.PI) / 180;
         const x = 50 + 38 * Math.sin(angle);
@@ -159,7 +147,6 @@ function initAnalogClock() {
         markersContainer.appendChild(marker);
     }
 
-    // Add numbers (12, 3, 6, 9)
     [12, 3, 6, 9].forEach(num => {
         const angle = ((num === 12 ? 0 : num * 30) * Math.PI) / 180;
         const x = 50 + 42 * Math.sin(angle);
@@ -191,7 +178,6 @@ function updateAnalogClock(time) {
         `translate(-50%, 0) rotate(${hourDegrees}deg)`;
 }
 
-// Date Info Functions
 function updateDateInfo() {
     if (!selectedDate) {
         document.getElementById('dateInfo').innerHTML = `
@@ -293,7 +279,6 @@ function getDaysUntil(date) {
     return Math.ceil(diff / (1000 * 60 * 60 * 24));
 }
 
-// Notes Functions
 function initNotes() {
     document.getElementById('addNoteBtn').addEventListener('click', () => {
         document.getElementById('noteForm').classList.remove('hidden');
@@ -369,7 +354,6 @@ function renderNotes() {
     `).join('');
 }
 
-// Reminders Functions
 function initReminders() {
     document.getElementById('addReminderBtn').addEventListener('click', () => {
         document.getElementById('reminderForm').classList.remove('hidden');
